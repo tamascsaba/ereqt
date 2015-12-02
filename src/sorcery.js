@@ -247,7 +247,10 @@ var Chain = (function () {
 })(); // source
 
 function resolveSourcePath(node, sourceRoot, source) {
-	return path.resolve(path.dirname(node.file), sourceRoot || '', source);
+	// TODO refact this dirty fix
+	return path.normalize(source.replace(/.*?:\/\//g, ""));
+    //return path.resolve(path.dirname(node.file), sourceRoot || '', source);
+}
 }
 
 var cache = {};
@@ -473,7 +476,7 @@ var Node = (function () {
 
 	Node.prototype.loadSync = function loadSync(sourcesContentByPath, sourceMapByPath) {
 		var _this2 = this;
-        
+
         if (sourcesContentByPath[this.file]) {
             this.content = sourcesContentByPath[this.file];
         }
